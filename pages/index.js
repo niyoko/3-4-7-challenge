@@ -52,18 +52,10 @@ const getGonName = (n) => {
 };
 
 const isCoprime = (a, b) => gcd(a, b) === 1;
-const hasCoprime = (a) => {
-  for (let i = MIN; i <= MAX; i++) {
-    if (isCoprime(a, i)) return true;
-  }
-
-  return false;
-};
-
 const getMarks = (a) => {
   const marks = [];
   for (let i = 1; i <= a; i++) {
-    if (isCoprime(a, i)) {
+    if (i === 1 || isCoprime(a, i)) {
       marks.push({ value: i });
     }
   }
@@ -112,10 +104,9 @@ export default function Index() {
   ]);
 
   useIsomorphicLayoutEffect(() => {
-    if (!some(bMarks, (bm) => bm.value === b)) {
-      setB(bMarks[0].value);
-    }
-  }, [bMarks, b]);
+    if (bMarks.length === 1) setB(bMarks[0].value);
+    else setB(bMarks[1].value);
+  }, [bMarks]);
 
   const isNumberCoprime = React.useMemo(() => isCoprime(a, b), [a, b]);
 
